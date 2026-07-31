@@ -1,1 +1,112 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>In-Store Build Kiosk</title><link rel="stylesheet" href="styles.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body class="kiosk"><header><strong>Northline Special-Order Builder</strong><button data-kiosk-exit>Staff exit</button></header><main><section class="builder"><div><span class="eyebrow">Step 1</span><h1>Choose a platform</h1><select data-platform><option value="">Select</option><option value="ar15">AR-style platform</option><option value="pistol">Pistol platform</option><option value="shotgun">Shotgun platform</option></select></div><div><span class="eyebrow">Step 2</span><h2>Compatible components</h2><div data-compatible></div><label class="toggle"><input type="checkbox" data-show-all> Show all catalog parts</label><p class="warning" data-warning hidden>Unverified combinations require staff compatibility review.</p></div><div><span class="eyebrow">Step 3</span><h2>Customer information</h2><form data-quote><label>Full name<input name="name" required></label><label>Phone<input name="phone" type="tel" required></label><label>Email<input name="email" type="email" required></label><label>Notes<textarea name="notes"></textarea></label><button class="btn primary" type="submit">Submit build quote</button><p data-quote-status></p></form></div></section></main><script src="config.js"></script><script src="kiosk.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="In-store special-order firearm and parts quote builder.">
+  <title>In-Store Build Kiosk — Northline Pawn</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="kiosk.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="kiosk-page">
+  <header class="kiosk-topbar">
+    <a class="kiosk-brand" href="index.html" aria-label="Northline Pawn storefront">
+      <span class="kiosk-brand-mark">N</span>
+      <span><strong>Northline Pawn</strong><small>In-store special-order builder</small></span>
+    </a>
+    <div class="kiosk-staff-links">
+      <a class="kiosk-link" href="index.html">Storefront</a>
+      <a class="kiosk-link" href="dashboard.html">Return to admin</a>
+      <button class="kiosk-link kiosk-lock" type="button" data-kiosk-exit>Lock kiosk</button>
+    </div>
+  </header>
+
+  <main class="kiosk-shell">
+    <section class="kiosk-intro">
+      <div>
+        <span class="eyebrow">Staff-activated in-store kiosk</span>
+        <h1>Build a special-order request.</h1>
+        <p>Choose a base platform, add compatible catalog items, and submit the build for staff approval. Pricing is an estimate until store staff confirms availability and compatibility.</p>
+      </div>
+      <div class="kiosk-notice">
+        <strong>Counter service only</strong>
+        <span>No online sale or transfer. Pay at the counter after staff approval.</span>
+      </div>
+    </section>
+
+    <div class="kiosk-progress" aria-label="Build progress">
+      <span class="active" data-progress="1">1. Platform</span>
+      <span data-progress="2">2. Components</span>
+      <span data-progress="3">3. Review</span>
+      <span data-progress="4">4. Contact</span>
+    </div>
+
+    <section class="kiosk-step" data-step="1">
+      <div class="kiosk-step-head">
+        <div><span class="eyebrow">Step 1</span><h2>Choose a base platform</h2></div>
+        <p>Sample products are stored in Supabase and can later be synchronized from a manufacturer or distributor API.</p>
+      </div>
+      <div class="kiosk-card-grid" data-platform-list></div>
+      <div class="kiosk-actions end"><button class="kiosk-btn primary" type="button" data-next="2" disabled>Continue to components</button></div>
+    </section>
+
+    <section class="kiosk-step" data-step="2" hidden>
+      <div class="kiosk-step-head">
+        <div><span class="eyebrow">Step 2</span><h2>Select components and accessories</h2></div>
+        <div class="kiosk-toggle-wrap">
+          <label class="kiosk-toggle"><input type="checkbox" data-show-all> <span>Show all catalog items</span></label>
+          <small>Confirmed compatible items appear first.</small>
+        </div>
+      </div>
+      <div class="kiosk-warning" data-warning hidden>
+        Unverified combinations require staff compatibility review before approval.
+      </div>
+      <div class="kiosk-filter-row" data-part-filters></div>
+      <div class="kiosk-card-grid compact" data-part-list></div>
+      <div class="kiosk-actions"><button class="kiosk-btn" type="button" data-back="1">Back</button><button class="kiosk-btn primary" type="button" data-next="3">Review build</button></div>
+    </section>
+
+    <section class="kiosk-step" data-step="3" hidden>
+      <div class="kiosk-step-head"><div><span class="eyebrow">Step 3</span><h2>Review the build request</h2></div><p>Store staff will verify final compatibility, availability, and pricing.</p></div>
+      <div class="kiosk-review-layout">
+        <div class="kiosk-summary" data-build-summary></div>
+        <aside class="kiosk-total-card">
+          <span>Estimated total</span>
+          <strong data-estimated-total>$0.00</strong>
+          <p>Taxes, fees, transfer requirements, and final pricing are confirmed by staff.</p>
+          <div class="compatibility-pill" data-compatibility-pill>Confirmed selections</div>
+        </aside>
+      </div>
+      <div class="kiosk-actions"><button class="kiosk-btn" type="button" data-back="2">Back</button><button class="kiosk-btn primary" type="button" data-next="4">Continue to contact information</button></div>
+    </section>
+
+    <section class="kiosk-step" data-step="4" hidden>
+      <div class="kiosk-step-head"><div><span class="eyebrow">Step 4</span><h2>Send the build to staff</h2></div><p>The customer receives a quote number. Staff approves or requests changes from the admin dashboard.</p></div>
+      <form class="kiosk-contact-card" data-quote>
+        <div class="kiosk-form-grid">
+          <label>Full name<input name="name" autocomplete="name" required></label>
+          <label>Phone<input name="phone" type="tel" autocomplete="tel" required></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required></label>
+          <label class="full">Notes for staff<textarea name="notes" rows="4" placeholder="Preferred finish, questions, or other request details."></textarea></label>
+        </div>
+        <label class="kiosk-consent"><input type="checkbox" name="acknowledge" required> I understand this is a quote request only. Staff must approve the build, and payment happens at the store counter.</label>
+        <p class="kiosk-form-status" data-quote-status aria-live="polite"></p>
+        <div class="kiosk-actions"><button class="kiosk-btn" type="button" data-back="3">Back</button><button class="kiosk-btn primary" type="submit">Submit build for approval</button></div>
+      </form>
+    </section>
+
+    <section class="kiosk-success" data-success hidden>
+      <div class="success-mark">✓</div>
+      <span class="eyebrow">Submitted for staff review</span>
+      <h2>Your quote number is <strong data-success-number></strong></h2>
+      <p>Please return the tablet to a staff member. The store will confirm compatibility, availability, and final pricing before payment.</p>
+      <div class="kiosk-actions center"><button class="kiosk-btn primary" type="button" data-start-over>Start a new build</button><a class="kiosk-btn" href="dashboard.html">Return to staff</a></div>
+    </section>
+  </main>
+
+  <div class="kiosk-loading" data-loading><div class="spinner"></div><span>Loading the special-order catalog…</span></div>
+  <script src="config.js"></script>
+  <script src="kiosk.js"></script>
+</body>
+</html>
