@@ -1,6 +1,6 @@
 # CTRL Wonder Studio — storefront + admin
 
-Reference-inspired black-and-purple storefront with shared Supabase product inventory and click events.
+Reference-inspired black-and-purple all-content storefront with a shared Supabase catalog and click events. Product categories now include Digital Art, Manga & Comics, Video & Film, Apparel, Prints & Posters, and Collectibles. This is CTRL Wonder Studio's creative-content hub, not a clothing-only shop.
 
 ## URLs (once GitHub Pages is enabled)
 - Storefront: https://brando2moon.github.io/pawnsite-template/
@@ -21,10 +21,11 @@ Tables created in existing active Supabase project `vhxmczybvvsolbgmprzk`:
 - `public.ctrlwonder_products`: inventory and sample pricing; product changes propagate to all visitors on page reload.
 - `public.ctrlwonder_events`: page_view, product_view, add_to_cart, checkout_click, nav_click. Readable by the authenticated admin only; anonymous visitors can write allowlisted action events.
 
-The initial 8 products are **fake demonstration inventory** with third-party placeholder photos. Sample listing prices and stars are not verified customer ratings. Replace with actual Printify mockups and variants before trading.
+The initial 8 creative studio listings (including concept references to Veil of the Holy War, Hood in the New World, Tournament of Wonder, and When Will You Be Home?) are **fake demonstration inventory** with third-party placeholder photos. Sample listing prices and stars are not verified customer ratings. Replace with actual Printify mockups and variants before trading.
 
 ## Important
 - The checkout control deliberately does not accept money.
 - Product click counts do NOT represent completed sales or unique visitors.
 - Unauthenticated event submission can be spammed. Add server-side bot protection/rate limiting before depending on public analytics at scale.
+- Digital downloads, video delivery, and licensing are not implemented yet. Do not treat previews or sample prices as live inventory.
 - This is a static website, **not** a complete Printify integration. Real checkout requires secure Stripe backend, webhook verification, Printify order synchronization, tracking, tax and refund policies.
