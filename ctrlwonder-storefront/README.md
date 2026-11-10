@@ -1,30 +1,30 @@
-# CTRL Wonder Studio storefront
+# CTRL Wonder Studio — storefront + admin
 
-A responsive black-and-purple storefront prototype built from the supplied visual reference.
+Reference-inspired black-and-purple storefront with shared Supabase product inventory and click events.
 
-## Where the code is
-Open **index.html** in this folder. This is a single-file HTML/CSS/JavaScript storefront that works on GitHub Pages, Vercel, Netlify, or any static hosting service.
+## URLs (once GitHub Pages is enabled)
+- Storefront: https://brando2moon.github.io/pawnsite-template/
+- Admin: https://brando2moon.github.io/pawnsite-template/admin.html
+- GitHub Pages settings: https://github.com/Brando2moon/pawnsite-template/settings/pages
 
-## Features
-- Responsive hero, navigation and mobile menu
-- Product category filters, search and sorting
-- Product detail modal with size selection
-- Shopping cart with persistent browser storage, quantities and subtotal
-- Original CTRL Wonder Studio branding and contact link
+GitHub Pages settings: deploy from branch `gh-pages` and directory `/(root)`.
 
-## IMPORTANT: Demo, not live commerce
-The products, prices, photographs, inventory, and stars are **sample data** only. No customer payments or Printify orders are processed. Checkout is intentionally disabled.
+## Dashboard access
+The admin page uses **Supabase Auth**. Admin access is restricted by database Row Level Security policies to the authenticated email `ctrlwonderstudio@gmail.com`.
 
-To launch real commerce:
-1. Create or configure a Printify shop and populate its actual products/variants.
-2. Deploy a secure backend. **Never expose the Printify API token or Stripe secret key in the HTML or a public repository.**
-3. Fetch published Printify catalog information server-side and map real variant IDs, sizing, production availability and prices to your storefront.
-4. Build a Stripe Checkout Session endpoint using verified prices, plus a Stripe webhook that verifies signatures, records orders and prevents duplicate fulfillment.
-5. Upon verified payment, submit the matching Printify order server-side; implement retry/idempotency, address validation, error handling, and tracking updates.
-6. Add sales tax, returns/refunds, privacy and shipping policies before accepting customers.
-7. Replace the sample images with licensed art and actual Printify mockups.
+**First-time setup:** In [Supabase Auth users](https://supabase.com/dashboard/project/vhxmczybvvsolbgmprzk/auth/users), invite/create the admin user for this email, then sign in to the admin page with that user's password. For email-link sign-in, allow `https://brando2moon.github.io/pawnsite-template/admin.html` under [Auth URL configuration](https://supabase.com/dashboard/project/vhxmczybvvsolbgmprzk/auth/url-configuration).
 
-## Deployment via GitHub Pages
-This folder can be published as a separate GitHub Pages site if moved to the repository root or a /docs folder on the Pages publishing branch, or deployed as a subfolder with a host that allows selecting this directory.
+The GitHub website source contains only the **public publishable key**; do not add service-role, Printify, or Stripe secret keys to this repository.
 
-Contact: ctrlwonderstudio@gmail.com
+## Shared data
+Tables created in existing active Supabase project `vhxmczybvvsolbgmprzk`:
+- `public.ctrlwonder_products`: inventory and sample pricing; product changes propagate to all visitors on page reload.
+- `public.ctrlwonder_events`: page_view, product_view, add_to_cart, checkout_click, nav_click. Readable by the authenticated admin only; anonymous visitors can write allowlisted action events.
+
+The initial 8 products are **fake demonstration inventory** with third-party placeholder photos. Sample listing prices and stars are not verified customer ratings. Replace with actual Printify mockups and variants before trading.
+
+## Important
+- The checkout control deliberately does not accept money.
+- Product click counts do NOT represent completed sales or unique visitors.
+- Unauthenticated event submission can be spammed. Add server-side bot protection/rate limiting before depending on public analytics at scale.
+- This is a static website, **not** a complete Printify integration. Real checkout requires secure Stripe backend, webhook verification, Printify order synchronization, tracking, tax and refund policies.
